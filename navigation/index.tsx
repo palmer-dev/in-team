@@ -12,6 +12,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
+import { useRef, useEffect } from "react";
 import { ColorSchemeName, Pressable } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Colors from "../constants/Colors";
@@ -27,7 +28,8 @@ import HelpScreen from "../screens/profilSettings/HelpScreen";
 import NotificationScreen from "../screens/profilSettings/NotificationScreen";
 import SecurityScreen from "../screens/profilSettings/SecurityScreen";
 import UserEditScreen from "../screens/profilSettings/UserEditScreen";
-
+import SignalScreen from "../screens/SignalScreen";
+import LottieView from "lottie-react-native";
 import {
   RootStackParamList,
   RootTabParamList,
@@ -70,6 +72,10 @@ function RootNavigator() {
         options={{ title: "Oops!" }}
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
+        <Stack.Screen
+          name="SignalScreen"
+          component={SignalScreen}
+        />
         <Stack.Screen
           name="UserEditScreen"
           component={UserEditScreen}
@@ -127,7 +133,7 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
-
+  const animation = useRef(null);
   return (
     <BottomTab.Navigator
       initialRouteName="HomePage"
@@ -139,23 +145,29 @@ function BottomTabNavigator() {
         name="HomePage"
         component={HomePageScreen}
         options={({ navigation }: RootTabScreenProps<"HomePage">) => ({
-          title: "Page d'accueil",
+          title: "Accueil",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name="weight-lifter"
-              size={32}
-              color={color}
+            <LottieView
+              style={{ height: 30, width: 30 }}
+              source={require("../assets/bottombarlogo/dumbbell.json")}
+              loop
             />
+              //  <FontAwesome
+              //   name="info-circle"
+              //   size={25}
+              //   color={Colors[colorScheme].text}
+              //   style={{ marginRight: 15 }}
+              // />
           ),
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate("Modal")}
+              onPress={() => navigation.navigate("SignalScreen")}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}
             >
               <FontAwesome
-                name="info-circle"
+                name="history"
                 size={25}
                 color={Colors[colorScheme].text}
                 style={{ marginRight: 15 }}
@@ -163,6 +175,14 @@ function BottomTabNavigator() {
             </Pressable>
           ),
         })}
+      />
+      <BottomTab.Screen
+        name="ScanScreen"
+        component={ScanScreen}
+        options={{
+          title: "Scan Screen",
+          tabBarIcon: ({ color }) => <TabBarIcon name="qrcode" color={color} />,
+        }}
       />
       <BottomTab.Screen
         name="AccountScreen"
@@ -207,14 +227,6 @@ function BottomTabNavigator() {
             </Pressable>
           ),
         })}
-      />
-      <BottomTab.Screen
-        name="ScanScreen"
-        component={ScanScreen}
-        options={{
-          title: "Scan Screen",
-          tabBarIcon: ({ color }) => <TabBarIcon name="qrcode" color={color} />,
-        }}
       />
     </BottomTab.Navigator>
   );
