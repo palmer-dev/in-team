@@ -29,6 +29,7 @@ import NotificationScreen from "../screens/profilSettings/NotificationScreen";
 import SecurityScreen from "../screens/profilSettings/SecurityScreen";
 import UserEditScreen from "../screens/profilSettings/UserEditScreen";
 import SignalScreen from "../screens/SignalScreen";
+import ProductScreen from "../screens/ProductScreen";
 import LottieView from "lottie-react-native";
 import {
   RootStackParamList,
@@ -71,11 +72,10 @@ function RootNavigator() {
         component={NotFoundScreen}
         options={{ title: "Oops!" }}
       />
+
       <Stack.Group screenOptions={{ presentation: "modal" }}>
-        <Stack.Screen
-          name="SignalScreen"
-          component={SignalScreen}
-        />
+        <Stack.Screen name="ProductScreen" component={ProductScreen} />
+        <Stack.Screen name="SignalScreen" component={SignalScreen} />
         <Stack.Screen
           name="UserEditScreen"
           component={UserEditScreen}
@@ -147,17 +147,17 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<"HomePage">) => ({
           title: "Accueil",
           tabBarIcon: ({ color }) => (
-            <LottieView
-              style={{ height: 30, width: 30 }}
-              source={require("../assets/bottombarlogo/dumbbell.json")}
-              loop
+            // <LottieView
+            //   style={{ height: 30, width: 30 }}
+            //   source={require("../assets/bottombarlogo/dumbbell.json")}
+            //   loop
+            // />
+            <FontAwesome
+              name="info-circle"
+              size={25}
+              color={Colors[colorScheme].text}
+              style={{ marginRight: 15 }}
             />
-              //  <FontAwesome
-              //   name="info-circle"
-              //   size={25}
-              //   color={Colors[colorScheme].text}
-              //   style={{ marginRight: 15 }}
-              // />
           ),
           headerRight: () => (
             <Pressable

@@ -1,18 +1,13 @@
 import { StyleSheet } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
-import EditScreenInfo from "../components/EditScreenInfo";
+import React, { useState } from "react";
 import { Text, View } from "../components/Themed";
-import { RootTabScreenProps } from "../types";
 import Searchbar from "../components/SearchFilter";
 import HorizontalScrollMenu, {
   RouteProps,
 } from "@nyashanziramasanga/react-native-horizontal-scroll-menu/src";
+import ProductCard from "../components/ProductCard";
 
-export default function HomePageScreen({
-  navigation,
-}: RootTabScreenProps<"HomePage">) {
-  const [selectedIndex, setSelectedIndex] = useState(1);
-
+export default function HomePageScreen() {
   const NavigationTabs = [
     { id: 1, name: "Accessory" },
     { id: 2, name: "BAG" },
@@ -27,32 +22,94 @@ export default function HomePageScreen({
     { id: 11, name: "ROPE" },
     { id: 12, name: "TUBING" },
   ];
-  const onPress = (route: RouteProps) => {
-    setSelectedIndex(route.id);
-    console.log("Tab pressed", route);
+
+  const [selectedTab, setSelectedTab] = useState(NavigationTabs[0].id);
+  const [searchValue, setSearchValue] = useState("");
+
+  const products = {
+    1: [
+      {
+        name: "Product 1",
+        ref: "001",
+        brand: "Accessory",
+        image: "https://picsum.photos/200/300",
+      },
+      {
+        name: "Product 2",
+        ref: "002",
+        brand: "Accessory",
+        image: "https://picsum.photos/200/300",
+      },
+    ],
+    3: [
+      {
+        name: "Product 3",
+        ref: "003",
+        brand: "BALL",
+        image: "https://picsum.photos/200/300",
+      },
+    ],
+    6: [
+      {
+        name: "Product 4",
+        ref: "004",
+        brand: "KETTLE BELL",
+        image: "https://picsum.photos/200/300",
+      },
+      {
+        name: "Product 5",
+        ref: "005",
+        brand: "KETTLE BELL",
+        image: "https://picsum.photos/200/300",
+      },
+      {
+        name: "Product 6",
+        ref: "006",
+        brand: "KETTLE BELL",
+        image: "https://picsum.photos/200/300",
+      },
+      {
+        name: "Product 7",
+        ref: "007",
+        brand: "KETTLE BELL",
+        image: "https://picsum.photos/200/300",
+      },
+    ],
   };
 
-  const [value, setValue] = useState();
-  function updateSearch(value) {
-    console.log(value);
-  }
+  const filteredProducts = products[selectedTab].filter(
+    (product) =>
+      product.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+      product.ref.toLowerCase().includes(searchValue.toLowerCase())
+  );
+
+  const onTabPress = (route: RouteProps) => {
+    setSelectedTab(route.id);
+  };
+
+  const onSearchValueChange = (value: string) => {
+    setSearchValue(value);
+  };
 
   return (
     <View>
       <Searchbar
-        value={value}
-        updateSearch={updateSearch}
+        value={searchValue}
+        updateSearch={onSearchValueChange}
         style={{ marginTop: "8%" }}
       />
       <HorizontalScrollMenu
         items={NavigationTabs}
-        onPress={onPress}
-        selected={selectedIndex}
+        onPress={onTabPress}
+        selected={selectedTab}
         activeBackgroundColor={"#003D5C"}
         activeTextColor={"white"}
         itemWidth={80}
         scrollAreaStyle={{ height: 50 }}
       />
+      {filteredProducts.map((product) => (
+        <ProductCard key={product.ref} product={product} />
+      ))}
     </View>
   );
 }

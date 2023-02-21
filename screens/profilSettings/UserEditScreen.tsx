@@ -129,9 +129,7 @@ export default function UserEditScreen() {
         <TextInput
           style={styles.inputField}
           value={fields.adress}
-          onChangeText={(adress) =>
-            setFields({ ...fields, adress: adress })
-          }
+          onChangeText={(adress) => setFields({ ...fields, adress: adress })}
         />
 
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
