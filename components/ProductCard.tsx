@@ -27,7 +27,7 @@ const ProductCard = (props: ProductCardProps) => {
         <View style={styles.textContainer}>
           <Text style={styles.title}>{props.product.name}</Text>
           <Text style={styles.subtitle}>{props.product.brand}</Text>
-          <Text style={styles.subtitle}>{props.product.ref}</Text>
+          <Text style={styles.subtitle}>Ref: {props.product.ref}</Text>
         </View>
       </View>
     </TouchableOpacity>

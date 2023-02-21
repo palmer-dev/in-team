@@ -33,7 +33,7 @@ import HelpScreen from "../screens/profilSettings/HelpScreen";
 import NotificationScreen from "../screens/profilSettings/NotificationScreen";
 import SecurityScreen from "../screens/profilSettings/SecurityScreen";
 import UserEditScreen from "../screens/profilSettings/UserEditScreen";
-import SignalScreen from "../screens/SignalScreen";
+import SignalProductScreen from "../screens/SignalProductScreen";
 import ProductScreen from "../screens/ProductScreen";
 import LottieView from "lottie-react-native";
 import { Text, View } from "../components/Themed";
@@ -81,7 +81,10 @@ function RootNavigator() {
 
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="ProductScreen" component={ProductScreen} />
-        <Stack.Screen name="SignalScreen" component={SignalScreen} />
+        <Stack.Screen
+          name="SignalProductScreen"
+          component={SignalProductScreen}
+        />
         <Stack.Screen
           name="UserEditScreen"
           component={UserEditScreen}
