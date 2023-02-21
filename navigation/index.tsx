@@ -12,8 +12,13 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { useRef, useEffect } from "react";
-import { ColorSchemeName, Pressable } from "react-native";
+import { useRef, useEffect, useCallback } from "react";
+import {
+  ColorSchemeName,
+  Pressable,
+  TouchableHighlight,
+  TouchableOpacity,
+} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
@@ -31,6 +36,7 @@ import UserEditScreen from "../screens/profilSettings/UserEditScreen";
 import SignalScreen from "../screens/SignalScreen";
 import ProductScreen from "../screens/ProductScreen";
 import LottieView from "lottie-react-native";
+import { Text, View } from "../components/Themed";
 import {
   RootStackParamList,
   RootTabParamList,
@@ -129,11 +135,16 @@ function RootNavigator() {
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
+
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
-  const animation = useRef(null);
+  // const buttonRef = useRef<LottieView>(null);
+
+  // const onAdd = useCallback(() => {
+  //   buttonRef.current?.play(0, 40);
+  // }, []);
   return (
     <BottomTab.Navigator
       initialRouteName="HomePage"
@@ -147,16 +158,11 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<"HomePage">) => ({
           title: "Accueil",
           tabBarIcon: ({ color }) => (
-            // <LottieView
-            //   style={{ height: 30, width: 30 }}
-            //   source={require("../assets/bottombarlogo/dumbbell.json")}
-            //   loop
-            // />
-            <FontAwesome
-              name="info-circle"
-              size={25}
-              color={Colors[colorScheme].text}
-              style={{ marginRight: 15 }}
+            <LottieView
+              style={{ height: 60, width: 60 }}
+              source={require("../assets/bottombarlogo/dumbbell.json")}
+              loop={true}
+              autoPlay={true}
             />
           ),
           headerRight: () => (
@@ -181,7 +187,14 @@ function BottomTabNavigator() {
         component={ScanScreen}
         options={{
           title: "Scan Screen",
-          tabBarIcon: ({ color }) => <TabBarIcon name="qrcode" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <LottieView
+              style={{ height: 30, width: 30 }}
+              source={require("../assets/bottombarlogo/qrcode.json")}
+              loop
+              autoPlay
+            />
+          ),
         }}
       />
       <BottomTab.Screen
@@ -190,7 +203,14 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<"AccountScreen">) => ({
           title: "Compte",
           headerTitleAlign: "center",
-          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <LottieView
+              style={{ height: 30, width: 30 }}
+              source={require("../assets/bottombarlogo/user.json")}
+              loop
+              autoPlay
+            />
+          ),
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate("ModalCharacterChanger")}
