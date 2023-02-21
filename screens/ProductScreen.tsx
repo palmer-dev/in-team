@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { RootTabScreenProps } from "../types";
 import { Product } from "../types";
+import Maintenance from "../components/MaintenanceCard";
+import { useNavigation } from "@react-navigation/native";
 
 type Props = {
   product: Product;
@@ -9,9 +11,38 @@ type Props = {
 
 export default function ProductScreen({
   route,
-  navigation,
 }: RootTabScreenProps<"ProductScreen">) {
   const { product } = route.params;
+  const [isMaintenanceOpen, setIsMaintenanceOpen] = useState(false);
+  const navigation = useNavigation();
+
+  const toggleMaintenance = () => {
+    setIsMaintenanceOpen(!isMaintenanceOpen);
+  };
+
+  const maintenances = [
+    {
+      id: 1,
+      title: "Maintenance",
+      technician: "Joseph Dufour",
+      date: "12 juillet 2021",
+      time: "12h50",
+    },
+    {
+      id: 2,
+      title: "Réparation",
+      technician: "Michel Michel",
+      date: "13 juillet 2021",
+      time: "8h10",
+    },
+    {
+      id: 3,
+      title: "Maintenance",
+      technician: "Josiane",
+      date: "15 juillet 2021",
+      time: "13h50",
+    },
+  ];
 
   return (
     <View style={styles.container}>
@@ -20,23 +51,37 @@ export default function ProductScreen({
         <View style={styles.headerInfo}>
           <Text style={styles.title}>{product.name}</Text>
           <Text style={styles.subtitle}>{product.brand}</Text>
-          <Text style={styles.subtitle}>{product.ref}</Text>
+          <Text style={styles.subtitle}>Ref: {product.ref}</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() =>
+              navigation.navigate("SignalProductScreen", { product: product })
+            }
+          >
+            <Text style={styles.buttonText}>Signaler</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Signaler</Text>
-        </TouchableOpacity>
       </View>
+      <Text style={styles.label}>Description</Text>
       <Text style={styles.description}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor
         tortor quis ligula luctus, quis aliquam nulla accumsan. Donec eget enim
-        fringilla, eleifend est id, consequat ex. Sed sed risus euismod,
-        tincidunt metus in, pharetra nibh. Proin id sollicitudin enim. Nunc sit
-        amet varius massa. Aliquam sed hendrerit enim, in bibendum arcu. Sed
-        euismod euismod turpis at varius. Donec vel pharetra sapien. Donec
-        tristique, lectus quis sagittis rhoncus, ex dolor pretium tellus, id
-        elementum velit lacus id nibh. Nulla facilisi. Donec placerat felis
-        turpis, ut posuere tellus tincidunt sit amet.
+        fringilla, eleifend est id, consequat ex.
       </Text>
+      <TouchableOpacity
+        style={styles.maintenanceHeader}
+        onPress={toggleMaintenance}
+      >
+        <Text style={styles.maintenanceTitle}>Maintenances</Text>
+        <Text style={styles.chevron}>{isMaintenanceOpen ? "˄" : "˅"}</Text>
+      </TouchableOpacity>
+      {isMaintenanceOpen && (
+        <View style={styles.maintenanceContent}>
+          {maintenances.map((maintenance) => (
+            <Maintenance key={maintenance.id} maintenance={maintenance} />
+          ))}
+        </View>
+      )}
     </View>
   );
 }
@@ -52,38 +97,70 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   headerInfo: {
-    flex: 1,
-    marginLeft: 16,
+    marginLeft: 35,
   },
   image: {
-    width: 120,
-    height: 120,
+    width: 160,
+    height: 160,
     borderRadius: 8,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginTop: 8,
   },
   subtitle: {
     fontSize: 18,
     color: "#777",
-    marginTop: 4,
+  },
+  buttonContainer: {
+    alignItems: "flex-end",
+    width: "100%",
+    marginTop: 16,
+    paddingRight: 16,
   },
   button: {
-    backgroundColor: "red",
+    marginTop: 20,
+    backgroundColor: "#003D5C",
     padding: 8,
     borderRadius: 8,
-    marginLeft: 16,
   },
   buttonText: {
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
   },
+  label: {
+    marginTop: 30,
+    color: "#003D5C",
+    fontWeight: "bold",
+    fontSize: 22,
+    position: "relative",
+    right: 120,
+  },
   description: {
-    marginTop: 16,
+    marginTop: 10,
     fontSize: 16,
     lineHeight: 24,
+  },
+  maintenanceHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 30,
+    paddingHorizontal: 5,
+    width: "100%",
+  },
+  maintenanceTitle: {
+    color: "#003D5C",
+    fontSize: 22,
+    fontWeight: "bold",
+  },
+  chevron: {
+    color: "#003D5C",
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  maintenanceContent: {
+    marginTop: 10,
   },
 });
