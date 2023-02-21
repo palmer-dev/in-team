@@ -15,7 +15,7 @@ interface AnimatedSloganProps {
   progress: Animated.ShareableValue<number>;
 }
 const AnimatedPath = Animated.createAnimatedComponent(Path);
-const colors = ["#E20613", "#FF8D00", "#0086CD", "#B1A285"];
+const colors = ["#E7E349"];
 // Animation epaisseur de trait
 
 const AnimatedSlogan = ({ d, progress }: AnimatedSloganProps) => {
@@ -44,7 +44,7 @@ const AnimatedSlogan = ({ d, progress }: AnimatedSloganProps) => {
         animatedProps={animatedBGProps}
         stroke={stroke}
         d={d}
-        strokeWidth={3}
+        strokeWidth={2}
         strokeDasharray={length}
       />
       <AnimatedPath
@@ -52,8 +52,8 @@ const AnimatedSlogan = ({ d, progress }: AnimatedSloganProps) => {
         onLayout={() => setLength(ref.current.getTotalLength())}
         ref={ref}
         d={d}
-        stroke="black"
-        strokeWidth={3}
+        stroke="#E7E349"
+        strokeWidth={2}
         strokeDasharray={length}
       />
     </>

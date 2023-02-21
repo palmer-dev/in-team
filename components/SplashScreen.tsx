@@ -8,7 +8,7 @@ import AnimatedStroke from "./AnimatedSplashLogo/AnimatedLogo";
 // Import du U animer
 
 // Couleur animation du logo
-const colors = ["#E20613", "#FF8D00", "#0086CD", "#B1A285"];
+const colors = ["#E20613", "#FF8D00", "#0086CD", "#003D5C"];
 
 // GLOBAL FACTEUR
 const FACTEUR_REDUCTION = 64;
@@ -17,8 +17,8 @@ const FACTEUR_REDUCTION = 64;
 // Margin du svg
 const MARGIN = 10;
 // Definition de la taille de la fenêtre du svg
-const vWidth = 251 + MARGIN;
-const vHeight = 60 + MARGIN;
+const vWidth = 148 + MARGIN;
+const vHeight = 107 + MARGIN;
 // Definition de la taille  du svg
 const width = Dimensions.get("window").width - FACTEUR_REDUCTION;
 const height = (width * vHeight) / vWidth;
@@ -40,19 +40,25 @@ const SplashScreen = () => {
   const progress = useSharedValue(0);
   useEffect(() => {
     // Durée et type de transition
-    progress.value = withTiming(1, { duration: 5000, easing: Easing.linear });
+    progress.value = withTiming(1, { duration: 3000, easing: Easing.linear });
   }, [progress]);
   return (
     <View style={styles.layer}>
      
       <View style={styles.layersvg2}>
         <Svg
-          width={width - 10}
-          height={height - 10}
-          viewBox={[10, -MARGIN / 2, vWidth, vHeight + MARGIN / 2].join(" ")}
-        >
+          width={width}
+          height={height}
+         
+          viewBox={[
+          -MARGIN / 2,
+          -MARGIN / 2,
+          vWidth + MARGIN / 2,
+          vHeight + MARGIN / 2,
+        ].join(" ")}
+      >
           {paths.map((d, key) => (
-            <AnimatedStroke progress={progress} d={d} key={key} />
+            <AnimatedStroke progress={progress} d={d} key={key}  />
           ))}
         </Svg>
       </View>
@@ -70,7 +76,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     height: "100%",
-    backgroundColor: "red",
+    backgroundColor: "#003D5C",
   },
   // Container du svg 1
 
