@@ -173,9 +173,10 @@ const styles = StyleSheet.create({
     elevation: 3,
     marginHorizontal: 30,
     backgroundColor: "#003D5C",
-    marginTop: 20,
+    marginVertical: 20,
   },
   buttonText: {
     fontWeight: "bold",
+    color: "white",
   },
 });

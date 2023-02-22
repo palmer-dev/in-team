@@ -77,11 +77,13 @@ export default function HomePageScreen() {
     ],
   };
 
-  const filteredProducts = products[selectedTab].filter(
-    (product) =>
-      product.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-      product.ref.toLowerCase().includes(searchValue.toLowerCase())
-  );
+  const filteredProducts = products[selectedTab]
+    ? products[selectedTab].filter(
+        (product) =>
+          product.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+          product.ref.toLowerCase().includes(searchValue.toLowerCase())
+      )
+    : [];
 
   const onTabPress = (route: RouteProps) => {
     setSelectedTab(route.id);

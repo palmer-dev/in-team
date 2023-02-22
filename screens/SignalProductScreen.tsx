@@ -15,55 +15,39 @@ import { RootTabScreenProps } from "../types";
 import { Product } from "../types";
 import DropDownPicker from "react-native-dropdown-picker";
 import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from 'expo-file-system';
-
-type Props = {
-  product: Product;
-};
 
 export default function SignalProductScreen({
   route,
 }: RootTabScreenProps<"SignalProdctScreen">) {
   const { product } = route.params;
 
+  const [image, setImage] = useState(null);
+
   const takeImage = async () => {
     let result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
-      aspect: [4, 3],
       quality: 1,
     });
-  
+
     if (!result.canceled) {
-      let localUri = result.assets[0].uri;
-      let filename = localUri.split('/').pop();
-      let newUri = FileSystem.documentDirectory + filename;
-      await FileSystem.moveAsync({
-        from: localUri,
-        to: newUri,
-      });
+      setImage(result.assets[0].uri);
     }
   };
 
-  async function pickImage() {
+  const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
       quality: 1,
     });
-  
+
+    console.log(result);
+
     if (!result.canceled) {
-      let localUri = result.assets[0].uri;
-      let filename = localUri.split('/').pop();
-      let newUri = FileSystem.documentDirectory + filename;
-      await FileSystem.moveAsync({
-        from: localUri,
-        to: newUri,
-      });
+      setImage(result.assets[0].uri);
     }
   };
-  
-  
+
   const [fields, setFields] = useState({
     problemType: "",
     problemLocalisation: "",
@@ -116,74 +100,79 @@ export default function SignalProductScreen({
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Image source={{ uri: product.image }} style={styles.image} />
-        <View style={styles.headerInfo}>
-          <Text style={styles.title}>{product.name}</Text>
-          <Text style={styles.subtitle}>{product.brand}</Text>
-          <Text style={styles.subtitle}>Ref: {product.ref}</Text>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Image source={{ uri: product.image }} style={styles.image} />
+          <View style={styles.headerInfo}>
+            <Text style={styles.title}>{product.name}</Text>
+            <Text style={styles.subtitle}>{product.brand}</Text>
+            <Text style={styles.subtitle}>Ref: {product.ref}</Text>
+          </View>
         </View>
-      </View>
-      <View style={{ width: "95%" }}>
-        <Text style={styles.label}>Type de problème</Text>
-        <DropDownPicker
-          style={styles.input}
-          modalTitle="Type de message"
-          placeholder="Choisissez votre type de message"
-          open={openDropDown}
-          value={problemsTypeSelected}
-          items={problemsType}
-          setOpen={setOpenDropDown}
-          setValue={setProblemsTypeSelected}
-          setItems={setProblemsType}
-          theme="LIGHT"
-          mode="BADGE"
-          scrollViewProps={{
-            decelerationRate: "fast",
-          }}
-          modalProps={{
-            animationType: "slide",
-          }}
-          listMode="FLATLIST"
-        />
-      </View>
-      <View style={{ width: "95%" }}>
-        <Text style={styles.label}>Localisation du problème</Text>
-        <TextInput
-          placeholder="Entrez la localisation"
-          style={styles.input}
-          value={fields.problemLocalisation}
-          onChangeText={(problemLocalisation) =>
-            setFields({ ...fields, problemLocalisation: problemLocalisation })
-          }
-        />
-      </View>
+        <View style={{ width: "95%" }}>
+          <Text style={styles.label}>Type de problème</Text>
+          <DropDownPicker
+            style={styles.input}
+            modalTitle="Type de message"
+            placeholder="Choisissez votre type de message"
+            open={openDropDown}
+            value={problemsTypeSelected}
+            items={problemsType}
+            setOpen={setOpenDropDown}
+            setValue={setProblemsTypeSelected}
+            setItems={setProblemsType}
+            theme="LIGHT"
+            mode="BADGE"
+            scrollViewProps={{
+              decelerationRate: "fast",
+            }}
+            modalProps={{
+              animationType: "slide",
+            }}
+            listMode="FLATLIST"
+          />
+        </View>
+        <View style={{ width: "95%" }}>
+          <Text style={styles.label}>Localisation du problème</Text>
+          <TextInput
+            placeholder="Entrez la localisation"
+            style={styles.input}
+            value={fields.problemLocalisation}
+            onChangeText={(problemLocalisation) =>
+              setFields({ ...fields, problemLocalisation: problemLocalisation })
+            }
+          />
+        </View>
 
-      <View style={{ width: "95%" }}>
-        <Text style={styles.label}>Description</Text>
-        <TextInput
-          placeholder="Entrez la description"
-          style={[styles.input, { height: 100 }]}
-          value={fields.description}
-          onChangeText={(description) =>
-            setFields({ ...fields, description: description })
-          }
-          multiline
-        />
-      </View>
-      <View style={{flexDirection: "row"}}>
-        <TouchableOpacity style={styles.button} onPress={takeImage}>
-          <Text style={styles.buttonText}>Caméra</Text>
+        <View style={{ width: "95%" }}>
+          <Text style={styles.label}>Description</Text>
+          <TextInput
+            placeholder="Entrez la description"
+            style={[styles.input, { height: 100 }]}
+            value={fields.description}
+            onChangeText={(description) =>
+              setFields({ ...fields, description: description })
+            }
+            multiline
+          />
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity style={styles.button} onPress={takeImage}>
+            <Text style={styles.buttonText}>Caméra</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={pickImage}>
+            <Text style={styles.buttonText}>Fichier</Text>
+          </TouchableOpacity>
+        </View>
+        {image && (
+          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+        )}
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+          <Text style={styles.buttonText}>Envoyer</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={pickImage}>
-          <Text style={styles.buttonText}>Fichier</Text>
-        </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Envoyer</Text>
-      </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 

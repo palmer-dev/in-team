@@ -55,6 +55,10 @@ import {
 import { DefaultTheme, DarkTheme } from "@react-navigation/native";
 import LinkingConfiguration from "./LinkingConfiguration";
 import LogoInteam from "../assets/images/logo-iteam.png";
+import LoginScreen from "../screens/auth/LoginScreen";
+import PasswordForgetScreen from "../screens/auth/PasswordForgetScreen";
+import LogOutScreen from "../screens/auth/LogOutScreen";
+import { logout } from "../hooks/useDatabase";
 
 // ------------------------------------------------------------------
 export default function Navigation({
@@ -78,7 +82,12 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 // ------------------------------------------------------------------
 function RootNavigator() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      initialRouteName="LogIn"
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}
@@ -91,7 +100,14 @@ function RootNavigator() {
       />
 
       <Stack.Group screenOptions={{ presentation: "modal" }}>
-        <Stack.Screen name="ProductScreen" component={ProductScreen} />
+        <Stack.Screen
+          name="ProductScreen"
+          component={ProductScreen}
+          options={({ route, navigation }) => ({
+            title: "Produit",
+            headerShown: true,
+          })}
+        />
         <Stack.Screen
           name="SignalementUniqueScreen"
           component={SignalementUniqueScreen}
@@ -103,6 +119,10 @@ function RootNavigator() {
         <Stack.Screen
           name="SignalProductScreen"
           component={SignalProductScreen}
+          options={({ route, navigation }) => ({
+            title: "Signaler un problème",
+            headerShown: true,
+          })}
         />
         <Stack.Screen
           name="UserEditScreen"
@@ -157,6 +177,27 @@ function RootNavigator() {
           })}
         />
       </Stack.Group>
+      <Stack.Screen
+        name="LogIn"
+        component={LoginScreen}
+        options={({ route, navigation }) => ({
+          title: "Page de connexion",
+        })}
+      />
+      <Stack.Screen
+        name="LogOut"
+        component={LogOutScreen}
+        options={({ route, navigation }) => ({
+          title: "Page de connexion",
+        })}
+      />
+      <Stack.Screen
+        name="ForgotPassword"
+        component={PasswordForgetScreen}
+        options={({ route, navigation }) => ({
+          title: "Récupération de mot de passe",
+        })}
+      />
     </Stack.Navigator>
   );
 }
