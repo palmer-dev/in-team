@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   },
   label: {
     marginTop: 25,
-    color: "#E20613",
+    color: "#E7E349",
     fontWeight: "bold",
     fontSize: 15,
   },
@@ -172,7 +172,8 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     elevation: 3,
     marginHorizontal: 30,
-    backgroundColor: "#f74820",
+    backgroundColor: "#003D5C",
+    marginTop: 20,
   },
   buttonText: {
     fontWeight: "bold",

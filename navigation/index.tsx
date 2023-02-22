@@ -178,7 +178,7 @@ function BottomTabNavigator() {
               <Pressable
                 onPress={() => navigation.navigate("SignalScreen")}
                 style={({ pressed }) => ({
-                  opacity: pressed ? 0.5 : 1,
+                  opacity: pressed ? 0.4 : 1,
                 })}
               >
                 <FontAwesome
@@ -201,7 +201,7 @@ function BottomTabNavigator() {
                 ref={ref}
                 loop={false}
                 source={require("../assets/bottombarlogo/qrcode.json")}
-                style={styles.icon}
+                style={styles.iconqrcode}
               />
             ),
           }}
@@ -222,7 +222,7 @@ function BottomTabNavigator() {
               <Pressable
                 onPress={() => navigation.navigate("ModalCharacterChanger")}
                 style={({ pressed }) => ({
-                  opacity: pressed ? 0.5 : 1,
+                  opacity: pressed ? 0.4 : 1,
                   scale: 1,
                 })}
               >
@@ -241,7 +241,7 @@ function BottomTabNavigator() {
                   navigation.navigate("LogOut");
                 }}
                 style={({ pressed }) => ({
-                  opacity: pressed ? 0.5 : 1,
+                  opacity: pressed ? 0.4 : 1,
                   scale: 1,
                 })}
               >
@@ -440,6 +440,10 @@ const styles = StyleSheet.create({
     width: 36,
   },
   icondumbbell: {
+    height: 60,
+    width: 60,
+  },
+  iconqrcode: {
     height: 60,
     width: 60,
   },
