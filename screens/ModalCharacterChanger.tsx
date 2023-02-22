@@ -54,6 +54,7 @@ export default function ModalCharacterChanger({
             display: "flex",
             margin: 6,
             padding: 20,
+
             flexDirection: "row",
             justifyContent: "flex-end",
             backgroundColor: "transparent",
@@ -62,7 +63,7 @@ export default function ModalCharacterChanger({
           <View style={{ flex: 1, alignItems: "flex-start" }}>
             <Text
               style={{
-                height: 40,
+                height: 20,
                 textDecorationColor: "#212121",
               }}
             >
