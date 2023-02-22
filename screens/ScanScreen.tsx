@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import React, { useState, useEffect } from "react";
+import { Text, View, StyleSheet, Button, TouchableOpacity } from "react-native";
+import { BarCodeScanner } from "expo-barcode-scanner";
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -9,7 +9,7 @@ export default function App() {
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
+      setHasPermission(status === "granted");
     };
 
     getBarCodeScannerPermissions();
@@ -29,31 +29,32 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.square_topright}>
+      <View style={styles.container2}>
+        <Text style={styles.consigne}>Scanner le QR Code de votre machine</Text>
       </View>
-      <View style={styles.square_topright2}>
-      </View>
-      <View style={styles.square_topleft}>
-      </View>
-      <View style={styles.square_topleft2}>
-      </View>
-      <View style={styles.square_bottomleft}>
-      </View>
-      <View style={styles.square_bottomleft2}>
-      </View>
-      <View style={styles.square_bottomright}>
-      </View>
-      <View style={styles.square_bottomright2}>
-      </View>
-      <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        
-        style={StyleSheet.absoluteFillObject}
-      />
-      {scanned && <Button title={'Appuyez pour scanner à nouveau'} onPress={() => setScanned(false)} />}
-     
+      <View style={styles.square_topright}></View>
+      <View style={styles.square_topright2}></View>
+      <View style={styles.square_topleft}></View>
+      <View style={styles.square_topleft2}></View>
+      <View style={styles.square_bottomleft}></View>
+      <View style={styles.square_bottomleft2}></View>
+      <View style={styles.square_bottomright}></View>
+      <View style={styles.square_bottomright2}></View>
+      <View style={{ position: "absolute", ...styles.flexCenter }}>
+        <BarCodeScanner
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          style={(StyleSheet.absoluteFillObject, styles.camDisplay)}
+        />
 
-
+        {scanned && (
+          <TouchableOpacity
+            style={styles.buttonlol}
+            onPress={() => setScanned(false)}
+          >
+            <Text style={styles.tryagain}>Réessayer</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 }
@@ -61,12 +62,37 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    backgroundColor: "yellow"
+    backgroundColor: "transparent",
   },
-  square_topright:{
-    position: 'absolute',
+  flexCenter: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  container2: {
+    position: "absolute",
+    top: "0%",
+    zIndex: 50,
+    width: "100%",
+    height: 40,
+    backgroundColor: "white",
+  },
+  camDisplay: {
+    width: 1000,
+    height: 1000,
+  },
+  consigne: {
+    color: "#003D5C",
+    position: "absolute",
+    zIndex: 51,
+    fontSize: 20,
+    paddingLeft: 20,
+    top: "10%",
+    marginLeft: 10,
+  },
+  square_topright: {
+    position: "absolute",
     left: "60%",
     top: "30%",
     zIndex: 10,
@@ -75,10 +101,10 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10
+    borderBottomLeftRadius: 10,
   },
-  square_topright2:{
-    position: 'absolute',
+  square_topright2: {
+    position: "absolute",
     left: "81%",
     top: "30%",
     zIndex: 10,
@@ -87,10 +113,10 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
-    borderTopRightRadius: 10
+    borderTopRightRadius: 10,
   },
-  square_topleft:{    
-    position: 'absolute',
+  square_topleft: {
+    position: "absolute",
     right: "81%",
     top: "30%",
     zIndex: 10,
@@ -99,10 +125,11 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
-    borderTopLeftRadius: 10},
+    borderTopLeftRadius: 10,
+  },
 
-    square_topleft2:{    
-    position: 'absolute',
+  square_topleft2: {
+    position: "absolute",
     right: "60%",
     top: "30%",
     zIndex: 10,
@@ -111,10 +138,11 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
-    borderBottomRightRadius: 10},
+    borderBottomRightRadius: 10,
+  },
 
-    square_bottomleft:{
-     position: 'absolute',
+  square_bottomleft: {
+    position: "absolute",
     right: "60%",
     bottom: "30%",
     zIndex: 10,
@@ -123,10 +151,11 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderTopRightRadius: 10,
     borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10},
+    borderBottomRightRadius: 10,
+  },
 
-    square_bottomleft2:{
-     position: 'absolute',
+  square_bottomleft2: {
+    position: "absolute",
     right: "81%",
     bottom: "30%",
     zIndex: 10,
@@ -136,9 +165,9 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     borderBottomLeftRadius: 10,
     borderTopLeftRadius: 10,
-   },
-   square_bottomright:{ 
-    position: 'absolute',
+  },
+  square_bottomright: {
+    position: "absolute",
     left: "81%",
     bottom: "30%",
     zIndex: 10,
@@ -148,9 +177,9 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
     borderTopLeftRadius: 10,
-   },
-    square_bottomright2:{ 
-    position: 'absolute',
+  },
+  square_bottomright2: {
+    position: "absolute",
     left: "60%",
     bottom: "30%",
     zIndex: 10,
@@ -160,5 +189,20 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
     borderTopLeftRadius: 10,
-   },
+  },
+  buttonlol: {
+    position: "absolute",
+    zIndex: 50,
+    left: "21%",
+    top: "55%",
+  },
+  tryagain: {
+    color: "white",
+    backgroundColor: "#003D5C",
+    position: "absolute",
+    zIndex: 50,
+    padding: 10,
+    fontSize: 20,
+    borderRadius: 50,
+  },
 });
