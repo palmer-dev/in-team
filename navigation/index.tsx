@@ -9,6 +9,7 @@ import {
   ColorSchemeName,
   TouchableHighlight,
   TouchableOpacity,
+  Image,
 } from "react-native";
 // navigation
 import { NavigationContainer } from "@react-navigation/native";
@@ -45,6 +46,7 @@ import UserEditScreen from "../screens/profilSettings/UserEditScreen";
 import SignalProductScreen from "../screens/SignalProductScreen";
 import ProductScreen from "../screens/ProductScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import SignalementUniqueScreen from "../screens/SignalementUniqueScreen";
 import {
   RootStackParamList,
   RootTabParamList,
@@ -52,6 +54,8 @@ import {
 } from "../types";
 import { DefaultTheme, DarkTheme } from "@react-navigation/native";
 import LinkingConfiguration from "./LinkingConfiguration";
+import LogoInteam from "../assets/images/logo-iteam.png";
+
 // ------------------------------------------------------------------
 export default function Navigation({
   colorScheme,
@@ -88,6 +92,14 @@ function RootNavigator() {
 
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="ProductScreen" component={ProductScreen} />
+        <Stack.Screen
+          name="SignalementUniqueScreen"
+          component={SignalementUniqueScreen}
+          options={({ route, navigation }) => ({
+            title: "Historique",
+            headerShown: true,
+          })}
+        />
         <Stack.Screen
           name="SignalProductScreen"
           component={SignalProductScreen}
@@ -165,6 +177,7 @@ function BottomTabNavigator() {
           name="HomePage"
           component={HomePageScreen}
           options={({ navigation }: RootTabScreenProps<"HomePage">) => ({
+            title: "",
             // @ts-ignore
             tabBarIcon: ({ ref }) => (
               <Lottie
@@ -173,6 +186,9 @@ function BottomTabNavigator() {
                 source={require("../assets/bottombarlogo/dumbbell.json")}
                 style={styles.icondumbbell}
               />
+            ),
+            headerLeft: () => (
+              <Image source={LogoInteam} style={styles.iconinteam} />
             ),
             headerRight: () => (
               <Pressable
@@ -195,6 +211,7 @@ function BottomTabNavigator() {
           name="ScanScreen"
           component={ScanScreen}
           options={{
+            title: "",
             // @ts-ignore
             tabBarIcon: ({ ref }) => (
               <Lottie
@@ -204,12 +221,16 @@ function BottomTabNavigator() {
                 style={styles.iconqrcode}
               />
             ),
+            headerLeft: () => (
+              <Image source={LogoInteam} style={styles.iconinteam} />
+            ),
           }}
         />
         <BottomTab.Screen
           name="AccountScreen"
           component={AccountScreen}
           options={({ navigation }: RootTabScreenProps<"AccountScreen">) => ({
+            title: "Mon compte",
             tabBarIcon: ({ ref }) => (
               <Lottie
                 ref={ref}
@@ -442,6 +463,12 @@ const styles = StyleSheet.create({
   icondumbbell: {
     height: 60,
     width: 60,
+  },
+  iconinteam: {
+    height: 50,
+    width: 70,
+    resizeMode: "stretch",
+    marginLeft: 10,
   },
   iconqrcode: {
     height: 60,

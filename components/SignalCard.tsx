@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 type Signalement = {
   title: string;
@@ -7,6 +8,7 @@ type Signalement = {
   technician: string;
   date: string;
   time: string;
+  etat: string;
 };
 
 type SignalementCardProps = {
@@ -14,8 +16,29 @@ type SignalementCardProps = {
 };
 
 const SignalementCard = ({ signalement }: SignalementCardProps) => {
+  let couleurPastille;
+  switch (signalement.etat) {
+    case "en cours":
+      couleurPastille = "yellow";
+      break;
+    case "en attente":
+      couleurPastille = "red";
+      break;
+    default:
+      couleurPastille = "green";
+  }
+
+  const navigation = useNavigation();
+
+  const onPress = () => {
+    navigation.navigate("SignalementUniqueScreen", { signalement });
+  };
+  
+
   return (
+    <TouchableOpacity onPress={onPress}>
     <View style={styles.card}>
+      <View style={[styles.pastille, { backgroundColor: couleurPastille }]} />
       <View style={styles.textContainer}>
         <Text style={styles.title}>{signalement.title} de la machine {signalement.machine}</Text>
         <Text style={styles.subtitle}>{signalement.technician}</Text>
@@ -25,6 +48,7 @@ const SignalementCard = ({ signalement }: SignalementCardProps) => {
         <Text style={styles.time}>{signalement.time}</Text>
       </View>
     </View>
+    </TouchableOpacity>
   );
 };
 
@@ -48,8 +72,13 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
-
     elevation: 4,
+  },
+  pastille: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    marginRight: 8,
   },
   textContainer: {
     flex: 1,
