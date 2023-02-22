@@ -1,8 +1,15 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { RootTabScreenProps } from "../types";
 import { Product } from "../types";
-import Maintenance from "../components/MaintenanceCard";
+import SignalCard from "../components/SignalCard";
 import { useNavigation } from "@react-navigation/native";
 
 type Props = {
@@ -20,13 +27,14 @@ export default function ProductScreen({
     setIsMaintenanceOpen(!isMaintenanceOpen);
   };
 
-  const maintenances = [
+  const signalements = [
     {
       id: 1,
       title: "Maintenance",
       technician: "Joseph Dufour",
       date: "12 juillet 2021",
       time: "12h50",
+      etat: "en cours",
     },
     {
       id: 2,
@@ -34,6 +42,7 @@ export default function ProductScreen({
       technician: "Michel Michel",
       date: "13 juillet 2021",
       time: "8h10",
+      etat: "fait",
     },
     {
       id: 3,
@@ -41,48 +50,51 @@ export default function ProductScreen({
       technician: "Josiane",
       date: "15 juillet 2021",
       time: "13h50",
+      etat: "fait",
     },
   ];
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Image source={{ uri: product.image }} style={styles.image} />
-        <View style={styles.headerInfo}>
-          <Text style={styles.title}>{product.name}</Text>
-          <Text style={styles.subtitle}>{product.brand}</Text>
-          <Text style={styles.subtitle}>Ref: {product.ref}</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              navigation.navigate("SignalProductScreen", { product: product })
-            }
-          >
-            <Text style={styles.buttonText}>Signaler</Text>
-          </TouchableOpacity>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Image source={{ uri: product.image }} style={styles.image} />
+          <View style={styles.headerInfo}>
+            <Text style={styles.title}>{product.name}</Text>
+            <Text style={styles.subtitle}>{product.brand}</Text>
+            <Text style={styles.subtitle}>Ref: {product.ref}</Text>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() =>
+                navigation.navigate("SignalProductScreen", { product: product })
+              }
+            >
+              <Text style={styles.buttonText}>Signaler</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+        <Text style={styles.label}>Description</Text>
+        <Text style={styles.description}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor
+          tortor quis ligula luctus, quis aliquam nulla accumsan. Donec eget
+          enim fringilla, eleifend est id, consequat ex.
+        </Text>
+        <TouchableOpacity
+          style={styles.maintenanceHeader}
+          onPress={toggleMaintenance}
+        >
+          <Text style={styles.maintenanceTitle}>Signalements</Text>
+          <Text style={styles.chevron}>{isMaintenanceOpen ? "˄" : "˅"}</Text>
+        </TouchableOpacity>
+        {isMaintenanceOpen && (
+          <View style={styles.maintenanceContent}>
+            {signalements.map((signalement) => (
+              <SignalCard key={signalement.id} signalement={signalement} />
+            ))}
+          </View>
+        )}
       </View>
-      <Text style={styles.label}>Description</Text>
-      <Text style={styles.description}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor
-        tortor quis ligula luctus, quis aliquam nulla accumsan. Donec eget enim
-        fringilla, eleifend est id, consequat ex.
-      </Text>
-      <TouchableOpacity
-        style={styles.maintenanceHeader}
-        onPress={toggleMaintenance}
-      >
-        <Text style={styles.maintenanceTitle}>Maintenances</Text>
-        <Text style={styles.chevron}>{isMaintenanceOpen ? "˄" : "˅"}</Text>
-      </TouchableOpacity>
-      {isMaintenanceOpen && (
-        <View style={styles.maintenanceContent}>
-          {maintenances.map((maintenance) => (
-            <Maintenance key={maintenance.id} maintenance={maintenance} />
-          ))}
-        </View>
-      )}
-    </View>
+    </ScrollView>
   );
 }
 
@@ -162,5 +174,6 @@ const styles = StyleSheet.create({
   },
   maintenanceContent: {
     marginTop: 10,
+    marginHorizontal: 20,
   },
 });

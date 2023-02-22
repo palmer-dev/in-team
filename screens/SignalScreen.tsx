@@ -16,22 +16,25 @@ export default function SignalScreen({
       technician: "non attribué",
       date: "Aujourd'hui",
       time: "12h00",
+      etat: "en attente",
     },
     {
       id: 2,
       title: "Réparation",
       machine: "Alter",
       technician: "Jean Michel",
-      date: "10 février 2022",
-      time: "14h",
+      date: "hier",
+      time: "9h25",
+      etat: "en cours",
     },
     {
       id: 3,
       title: "Maintenance",
       machine: "presse",
-      technician: "non attribué",
-      date: "Aujourd'hui",
+      technician: "Josiane",
+      date: "14 février",
       time: "12h00",
+      etat: "fait",
     },
   ];
   return (
@@ -56,6 +59,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 40,
     marginTop: 20,
+    borderRadius: 5,
+    
   },
   title: {
     fontSize: 25,
