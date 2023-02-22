@@ -17,7 +17,9 @@ export default function AccountScreen({
   return (
     <View>
       <ScrollView>
-        <View>
+        <View
+          style={{ backgroundColor: "white", width: "100%", height: "100%" }}
+        >
           <View style={styles.container_character}>
             <View style={styles.username}>
               <Image style={styles.user_img} source={User}></Image>

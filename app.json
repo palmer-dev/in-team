@@ -7,6 +7,7 @@
     "icon": "./assets/images/splash.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
+    "backgroundColor": "white",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -15,9 +16,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
