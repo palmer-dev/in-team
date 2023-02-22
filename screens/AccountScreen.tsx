@@ -38,13 +38,13 @@ import {
               <View style={styles.container_userinformation}>
                 <View style={styles.userinformation}>
                   <FontAwesome
-                    name="user"
+                    name="envelope"
                     size={25}
                     color="black"
                     style={{ marginRight: 15 }}
                   />
                   <Text style={{}}>
-                    x
+                    michel.michel@gmail.com
                   </Text>
                 </View>
                 <View style={styles.userinformation}>
@@ -54,25 +54,25 @@ import {
                     color="black"
                     style={{ marginRight: 15 }}
                   />
-                  <Text style={{}}>x</Text>
+                  <Text style={{}}>0765458912</Text>
                 </View>
                 <View style={styles.userinformation}>
                   <FontAwesome
-                    name="inbox"
+                    name="home"
                     size={25}
                     color="black"
                     style={{ marginRight: 15 }}
                   />
-                  <Text style={{}}>x</Text>
+                  <Text style={{}}>Fitness park</Text>
                 </View>
                 <View style={styles.userinformation}>
                   <FontAwesome
-                    name="font-awesome"
+                    name="location-arrow"
                     size={25}
                     color="black"
                     style={{ marginRight: 15 }}
                   />
-                  <Text style={{}}>x</Text>
+                  <Text style={{}}>5 rue de la Liberté, 69006 Lyon</Text>
                 </View>
               </View>
             </View>

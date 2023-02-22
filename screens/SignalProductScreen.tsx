@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   TouchableOpacity,
+  Button,
   Alert,
   View,
   Text,
@@ -13,16 +14,56 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { RootTabScreenProps } from "../types";
 import { Product } from "../types";
 import DropDownPicker from "react-native-dropdown-picker";
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from 'expo-file-system';
 
 type Props = {
   product: Product;
 };
 
-export default function SignalScreen({
+export default function SignalProductScreen({
   route,
-}: RootTabScreenProps<"SignalScreen">) {
+}: RootTabScreenProps<"SignalProdctScreen">) {
   const { product } = route.params;
 
+  const takeImage = async () => {
+    let result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+  
+    if (!result.canceled) {
+      let localUri = result.assets[0].uri;
+      let filename = localUri.split('/').pop();
+      let newUri = FileSystem.documentDirectory + filename;
+      await FileSystem.moveAsync({
+        from: localUri,
+        to: newUri,
+      });
+    }
+  };
+
+  async function pickImage() {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+  
+    if (!result.canceled) {
+      let localUri = result.assets[0].uri;
+      let filename = localUri.split('/').pop();
+      let newUri = FileSystem.documentDirectory + filename;
+      await FileSystem.moveAsync({
+        from: localUri,
+        to: newUri,
+      });
+    }
+  };
+  
+  
   const [fields, setFields] = useState({
     problemType: "",
     problemLocalisation: "",
@@ -84,29 +125,30 @@ export default function SignalScreen({
           <Text style={styles.subtitle}>Ref: {product.ref}</Text>
         </View>
       </View>
-
-      <DropDownPicker
-        style={styles.dropDown}
-        modalTitle="Type de message"
-        placeholder="Choisissez votre type de message"
-        open={openDropDown}
-        value={problemsTypeSelected}
-        items={problemsType}
-        setOpen={setOpenDropDown}
-        setValue={setProblemsTypeSelected}
-        setItems={setProblemsType}
-        theme="LIGHT"
-        mode="BADGE"
-        scrollViewProps={{
-          decelerationRate: "fast",
-        }}
-        modalProps={{
-          animationType: "slide",
-        }}
-        listMode="FLATLIST"
-      />
-
-      <View style={{ marginTop: 20 }}>
+      <View style={{ width: "95%" }}>
+        <Text style={styles.label}>Type de problème</Text>
+        <DropDownPicker
+          style={styles.input}
+          modalTitle="Type de message"
+          placeholder="Choisissez votre type de message"
+          open={openDropDown}
+          value={problemsTypeSelected}
+          items={problemsType}
+          setOpen={setOpenDropDown}
+          setValue={setProblemsTypeSelected}
+          setItems={setProblemsType}
+          theme="LIGHT"
+          mode="BADGE"
+          scrollViewProps={{
+            decelerationRate: "fast",
+          }}
+          modalProps={{
+            animationType: "slide",
+          }}
+          listMode="FLATLIST"
+        />
+      </View>
+      <View style={{ width: "95%" }}>
         <Text style={styles.label}>Localisation du problème</Text>
         <TextInput
           placeholder="Entrez la localisation"
@@ -118,7 +160,7 @@ export default function SignalScreen({
         />
       </View>
 
-      <View style={{ marginTop: 20 }}>
+      <View style={{ width: "95%" }}>
         <Text style={styles.label}>Description</Text>
         <TextInput
           placeholder="Entrez la description"
@@ -129,6 +171,14 @@ export default function SignalScreen({
           }
           multiline
         />
+      </View>
+      <View style={{flexDirection: "row"}}>
+        <TouchableOpacity style={styles.button} onPress={takeImage}>
+          <Text style={styles.buttonText}>Caméra</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={pickImage}>
+          <Text style={styles.buttonText}>Fichier</Text>
+        </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Envoyer</Text>
@@ -165,21 +215,32 @@ const styles = StyleSheet.create({
   },
   label: {
     marginTop: 25,
-    color: "#E20613",
+    marginBottom: 10,
+    color: "#003D5C",
     fontWeight: "bold",
     fontSize: 15,
   },
-  dropDown: {
-    backgroundColor: "white",
-    color: "black",
-    marginTop: 5,
-    borderColor: "white",
-  },
   input: {
+    backgroundColor: "transparent",
     borderWidth: 1,
     borderColor: "#999",
     padding: 10,
     fontSize: 16,
     borderRadius: 8,
+  },
+  button: {
+    marginTop: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 25,
+    elevation: 3,
+    marginHorizontal: 30,
+    backgroundColor: "#003D5C",
+  },
+  buttonText: {
+    fontWeight: "bold",
+    color: "#E7E349",
   },
 });
