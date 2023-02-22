@@ -140,7 +140,7 @@ function RootNavigator() {
           name="SignalScreen"
           component={SignalScreen}
           options={({ route, navigation }) => ({
-            title: "Paramètres",
+            title: "Signalement",
             headerShown: true,
           })}
         />
