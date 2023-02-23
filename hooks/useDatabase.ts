@@ -2,20 +2,20 @@ import { store } from "../redux";
 import { updateUserInfos } from "../redux/UserInfos/UserInfosSlice";
 import { fetchAPIwithToken } from "./useAPI";
 
-const BASE_URL = "https://lab-rey.fr/";
-const AUTH_URL = `${BASE_URL}auth/`;
+const BASE_URL = "https://lab-rey.fr:444/";
+const AUTH_URL = `${BASE_URL}auth/login/client`;
 const API_URL = `${BASE_URL}api/`;
 
 let myInfos: any;
 
 export async function auth(
-  username: string,
-  password: string
+  identifiant: string,
+  mdp: string
 ): Promise<boolean> {
   try {
-    const data = { username: username, password: password };
+    const data = { identifiant: identifiant, mdp: mdp };
 
-    const result = await fetch(AUTH_URL + "login", {
+    const result = await fetch(AUTH_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,61 +44,9 @@ export async function auth(
 
 export async function logout(): Promise<void> {}
 
-// ======= FORM PAGE ======= //
-
-export async function getEvents() {
-  try {
-    const result = await fetchAPI(API_URL + `events`);
-    return result;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-export async function getForms() {
-  try {
-    const result = await fetchAPI(API_URL + `forms`);
-    return result;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-export async function getFieldsInForm(idForm: string) {
-  try {
-    let response = await fetchAPI(API_URL + `fields/${idForm}`);
-    return response;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-export async function getField(idField: string) {
-  try {
-    let response = await fetchAPI(API_URL + `fields/${idField}`);
-    return response;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-export async function saveFormAnswers(id_form: string, answers: {}) {
-  // CREATION DU LOT DE REPONSE
-  const newAnswers = await fetch(BASE_URL + "saveFormAnswers", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ idForm: id_form, answers: answers }),
-  });
-  const retQueryAndswers = await newAnswers.json();
-  const idAnswers = retQueryAndswers[0].an_id;
-}
-
 // ======= HOME PAGE ======= //
 export async function getUserInfos() {
-  let response = await fetchAPI(API_URL + `ambassador/`);
+  let response = await fetchAPI(API_URL + `clients/`);
   return { ...myInfos.user, stats: response };
 }
 

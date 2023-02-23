@@ -18,8 +18,8 @@ export default function LoginScreen({
   route,
   navigation,
 }: RootTabScreenProps<"LogIn">) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [identifiant, setIdentifiant] = useState("");
+  const [mdp, setMdp] = useState("");
   const colorSchema = useColorScheme();
 
   colorSchema == "dark" ? "couleurDark" : "couleurLight";
@@ -29,14 +29,14 @@ export default function LoginScreen({
   useFocusEffect(
     React.useCallback(() => {
       if (hasLoggedOut) {
-        setUsername("");
-        setPassword("");
+        setIdentifiant("");
+        setMdp("");
       }
     }, [])
   );
 
   const sendForm = async () => {
-    let isLogedIn = await auth(username.replace(/^\s+|\s+$/g, ""), password);
+    let isLogedIn = await auth(identifiant.replace(/^\s+|\s+$/g, ""), mdp);
 
     if (isLogedIn == true) {
       navigation.navigate("Root");
@@ -82,8 +82,8 @@ export default function LoginScreen({
             style={styles.inputField}
             placeholder="Votre nom d'utilisateur"
             placeholderTextColor={"darkgrey"}
-            value={username}
-            onChangeText={setUsername}
+            value={identifiant}
+            onChangeText={setIdentifiant}
           ></TextInput>
         </View>
 
@@ -96,8 +96,8 @@ export default function LoginScreen({
             style={styles.inputField}
             placeholderTextColor={"darkgrey"}
             placeholder="Mot de passe"
-            value={password}
-            onChangeText={setPassword}
+            value={mdp}
+            onChangeText={setMdp}
           ></TextInput>
         </View>
 

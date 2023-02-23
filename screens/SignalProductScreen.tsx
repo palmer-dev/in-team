@@ -9,10 +9,11 @@ import {
   StyleSheet,
   TextInput,
   ScrollView,
+  TouchableWithoutFeedback,
+  Modal,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RootTabScreenProps } from "../types";
-import { Product } from "../types";
 import DropDownPicker from "react-native-dropdown-picker";
 import * as ImagePicker from "expo-image-picker";
 
@@ -21,7 +22,7 @@ export default function SignalProductScreen({
 }: RootTabScreenProps<"SignalProdctScreen">) {
   const { product } = route.params;
 
-  const [image, setImage] = useState(null);
+  const [images, setImages] = useState([]);
 
   const takeImage = async () => {
     let result = await ImagePicker.launchCameraAsync({
@@ -30,7 +31,8 @@ export default function SignalProductScreen({
     });
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      const newImage = result.assets[0].uri;
+      setImages([...images, newImage]);
     }
   };
 
@@ -44,7 +46,8 @@ export default function SignalProductScreen({
     console.log(result);
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      const newImage = result.assets[0].uri;
+      setImages([...images, newImage]);
     }
   };
 
@@ -97,6 +100,14 @@ export default function SignalProductScreen({
         ]
       );
     }
+  };
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+
+  const handleImageClick = (uri: string) => {
+    setSelectedImage(uri);
+    setModalVisible(true);
   };
 
   return (
@@ -165,9 +176,21 @@ export default function SignalProductScreen({
             <Text style={styles.buttonText}>Fichier</Text>
           </TouchableOpacity>
         </View>
-        {image && (
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-        )}
+        <View style={styles.imagesContainer}>
+          {images.slice(0, 3).map((uri) => (
+            <TouchableWithoutFeedback onPress={() => handleImageClick(uri)}>
+              <Image source={{ uri }} key={uri} style={styles.image_prise} />
+            </TouchableWithoutFeedback>
+          ))}
+        </View>
+        <Modal visible={modalVisible} transparent={true}>
+          <TouchableOpacity
+            style={styles.modalBackground}
+            onPress={() => setModalVisible(false)}
+          >
+            <Image style={styles.modalImage} source={{ uri: selectedImage }} />
+          </TouchableOpacity>
+        </Modal>
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Envoyer</Text>
         </TouchableOpacity>
@@ -217,6 +240,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderRadius: 8,
   },
+  imagesContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
+  },
+  image_prise: {
+    margin: 5,
+    width: 120,
+    height: 120,
+    marginBottom: 20,
+    borderRadius: 5,
+  },
   button: {
     marginTop: 25,
     alignItems: "center",
@@ -231,5 +266,15 @@ const styles = StyleSheet.create({
   buttonText: {
     fontWeight: "bold",
     color: "#E7E349",
+  },
+  modalBackground: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalImage: {
+    width: 300,
+    height: 300,
   },
 });

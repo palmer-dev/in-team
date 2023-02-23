@@ -11,9 +11,26 @@ import { Text, View } from "../components/Themed";
 import { FontAwesome } from "@expo/vector-icons";
 import User from "../assets/images/user.png";
 import LottieView from "lottie-react-native";
+//
+import { RootTabScreenProps, ClientData } from "../types";
+import { getUserInfos } from "../hooks/useDatabase";
+import { useAppSelector } from "../hooks/store";
+import { RootState } from "../redux";
+
 export default function AccountScreen({
   navigation,
 }: RootTabScreenProps<"AccountScreen">) {
+  //
+  const [userInfos, setUserInfos] = useState<ClientData | undefined>();
+  useEffect(() => {
+    let mounted = true;
+    getUserInfos().then((infos: ClientData) => {
+      if (mounted) {
+        setUserInfos(infos);
+      }
+    });
+  }, []);
+  //
   return (
     <View>
       <ScrollView>
@@ -27,7 +44,7 @@ export default function AccountScreen({
                 <Text style={{ fontSize: 18 }}>Client</Text>
 
                 <Text style={{ fontWeight: "bold", fontSize: 20 }}>
-                  Michel Michel
+                  Audran MASSACRY
                 </Text>
               </View>
             </View>
@@ -41,21 +58,21 @@ export default function AccountScreen({
             <View style={styles.container_userinformation}>
               <View style={styles.userinformation}>
                 <FontAwesome
-                  name="envelope"
-                  size={25}
-                  color="black"
-                  style={{ marginRight: 15 }}
-                />
-                <Text style={{}}>michel.michel@gmail.com</Text>
-              </View>
-              <View style={styles.userinformation}>
-                <FontAwesome
                   name="phone"
                   size={25}
                   color="black"
                   style={{ marginRight: 15 }}
                 />
-                <Text style={{}}>0765458912</Text>
+                <Text style={{}}>0782654239</Text>
+              </View>
+              <View style={styles.userinformation}>
+                <FontAwesome
+                  name="envelope"
+                  size={25}
+                  color="black"
+                  style={{ marginRight: 15 }}
+                />
+                <Text style={{}}>audran.massacry@next-u.fr</Text>
               </View>
               <View style={styles.userinformation}>
                 <FontAwesome
@@ -64,7 +81,7 @@ export default function AccountScreen({
                   color="black"
                   style={{ marginRight: 15 }}
                 />
-                <Text style={{}}>Fitness park</Text>
+                <Text style={{}}>Fitness Park</Text>
               </View>
               <View style={styles.userinformation}>
                 <FontAwesome
@@ -73,7 +90,7 @@ export default function AccountScreen({
                   color="black"
                   style={{ marginRight: 15 }}
                 />
-                <Text style={{}}>5 rue de la Liberté, 69006 Lyon</Text>
+                <Text style={{}}>6 rue de la liberté, 69006 LYON</Text>
               </View>
             </View>
           </View>
@@ -195,4 +212,5 @@ const styles = StyleSheet.create({
     width: 200,
     backgroundColor: "transparent",
   },
+  container_userinformation: {},
 });

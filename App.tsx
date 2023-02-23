@@ -6,6 +6,8 @@ import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation/index";
 import { Provider } from "react-redux";
 import { store } from "./redux";
+import { LogBox } from "react-native";
+LogBox.ignoreLogs(["Warning: ..."]);
 
 export default function App() {
   const isLoadingComplete = useCachedResources();

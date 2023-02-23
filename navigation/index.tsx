@@ -135,6 +135,10 @@ function RootNavigator() {
         <Stack.Screen
           name="NotificationScreen"
           component={NotificationScreen}
+          options={({ route, navigation }) => ({
+            title: "Notification",
+            headerShown: true,
+          })}
         />
         <Stack.Screen
           name="SecurityScreen"
