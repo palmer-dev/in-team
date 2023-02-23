@@ -228,6 +228,7 @@ function BottomTabNavigator() {
               <Lottie
                 ref={ref}
                 loop={false}
+                autoPlay={true}
                 source={require("../assets/bottombarlogo/dumbbell.json")}
                 style={styles.icondumbbell}
               />
@@ -262,6 +263,7 @@ function BottomTabNavigator() {
               <Lottie
                 ref={ref}
                 loop={false}
+                autoPlay={true}
                 source={require("../assets/bottombarlogo/qrcode.json")}
                 style={styles.iconqrcode}
               />
@@ -280,6 +282,7 @@ function BottomTabNavigator() {
               <Lottie
                 ref={ref}
                 loop={false}
+                autoPlay={true}
                 source={require("../assets/bottombarlogo/user.json")}
                 style={styles.icon}
               />
@@ -510,8 +513,8 @@ const styles = StyleSheet.create({
     width: 60,
   },
   iconinteam: {
-    height: 50,
-    width: 70,
+    height: 45,
+    width: 60,
     resizeMode: "stretch",
     marginLeft: 10,
   },
