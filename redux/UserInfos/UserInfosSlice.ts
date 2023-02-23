@@ -14,7 +14,6 @@ const initialState: UserState = {
 	identifiant: null,
 	secteur: null,
 	accessToken: null,
-
 };
 
 export const userInfosSlice = createSlice({
