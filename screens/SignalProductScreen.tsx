@@ -208,9 +208,13 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
   },
   headerInfo: {
-    marginLeft: 35,
+    marginLeft: 25,
+    flexShrink: 1,
+    maxWidth: "60%",
   },
   image: {
     width: 160,

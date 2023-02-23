@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
-
     elevation: 4,
   },
   image: {
@@ -59,7 +58,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   textContainer: {
+    flex: 1,
     marginLeft: 16,
+    flexWrap: "wrap",
+    alignItems: "flex-start",
   },
   title: {
     fontSize: 16,
