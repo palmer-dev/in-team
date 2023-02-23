@@ -10,22 +10,15 @@ import { fetchAPIwithToken } from "../hooks/useAPI";
 import { getMachines, getCategories } from "../hooks/useDatabase";
 
 export default function HomePageScreen() {
-	const NavigationTabs = [
-		{ id: 1, name: "Accessory" },
-		{ id: 2, name: "BAG" },
-		{ id: 3, name: "BALL" },
-		{ id: 4, name: "BAND" },
-		{ id: 5, name: "Dumbbell" },
-		{ id: 6, name: "KETTLE BELL" },
-		{ id: 7, name: "MAGNETS" },
-		{ id: 8, name: "NEO FIT BELL" },
-		{ id: 9, name: "OLYMPIC RINGS" },
-		{ id: 10, name: "Plate" },
-		{ id: 11, name: "ROPE" },
-		{ id: 12, name: "TUBING" },
-	];
-
-	const [selectedTab, setSelectedTab] = useState(NavigationTabs[0].id);
+	const [NavigationTabs, setNavigationTabs] = useState<
+		| [
+				{
+					id: number;
+					name: string;
+				}
+		  ]
+	>([{ id: 0, name: "nom" }]);
+	const [selectedTab, setSelectedTab] = useState(NavigationTabs[0]?.id);
 	const [searchValue, setSearchValue] = useState("");
 	const [products, setProducts] = useState([]);
 
@@ -102,6 +95,10 @@ export default function HomePageScreen() {
 
 	React.useEffect(() => {
 		getCategories().then((categories) => {
+			const tabs = categories.map((category: any, index: number) => {
+				return { id: index + 1, name: category.nom };
+			});
+			setNavigationTabs(tabs);
 			getMachines().then((result) => {
 				const machines = result.map((machine: any) => {
 					return {
@@ -109,9 +106,17 @@ export default function HomePageScreen() {
 						ref: machine.ref_machine,
 						brand: machine.marque,
 						image: "https://picsum.photos/200/300",
+						category: machine.category.nom,
 					};
 				});
-				setProducts({ 1: machines });
+				let tmp = {};
+				tabs.forEach(function (category: any) {
+					tmp[category.id] = machines.filter(
+						(machine: any) => machine.category == category.name
+					);
+				});
+				console.log(tmp);
+				setProducts(tmp);
 			});
 		});
 	}, []);
