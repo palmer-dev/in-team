@@ -27,7 +27,6 @@ async function fetchAPI(
 			};
 		}
 		if (response.newToken !== undefined) {
-			console.log(response.newToken);
 			myInfos.accessToken = response.newToken;
 		}
 		return response.result;
