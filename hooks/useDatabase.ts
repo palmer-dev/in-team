@@ -85,3 +85,14 @@ export async function getCategories() {
 	const response = await fetchAPI(API_URL + `categories`);
 	return response;
 }
+
+export async function getMachineById(id: string) {
+	const response = await fetchAPI(API_URL + `machines/${id}`);
+	return response;
+}
+
+// ======= PRODUCT PAGE ======= //
+export async function getSignalementsForProductId(id: string) {
+	const response = await fetchAPI(API_URL + `signalementsMachine/${id}`);
+	return response;
+}
