@@ -51,8 +51,8 @@ export default function SignalScreen({
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     alignItems: "center",
-    justifyContent: "center",
   },
   container_title: {
     backgroundColor: "rgba(229,226,76,0.53)",
@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     marginTop: 20,
     borderRadius: 5,
-    
   },
   title: {
     fontSize: 25,
