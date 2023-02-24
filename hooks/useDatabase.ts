@@ -1,7 +1,7 @@
 import { store } from "../redux";
 import { updateUserInfos } from "../redux/UserInfos/UserInfosSlice";
 
-const BASE_URL = "https://lab-rey.fr:444/";
+const BASE_URL = "https://lab-rey.fr/";
 const AUTH_URL = `${BASE_URL}auth/login/client`;
 const API_URL = `${BASE_URL}api/`;
 
@@ -11,28 +11,54 @@ let myInfos: any;
 async function fetchAPI(
 	url: string,
 	method: string = "GET",
+	data: object = {},
 	nameError: string = "fetchAPI"
 ) {
-	try {
-		let response = await fetch(url, {
-			method: method,
-			headers: {
-				"Content-type": "application/json",
-				Authorization: `JWT ${myInfos.accessToken}`,
-			},
-		}).then((response) => response.json());
-		if (response.status === 403) {
-			return {
-				msg: "Vous n'avez pas accès à l'API, reconnectez-vous, ou voyez avec votre administrateur pour régler le problème.",
-			};
+	if (method === "GET") {
+		try {
+			let response = await fetch(url, {
+				method: method,
+				headers: {
+					"Content-type": "application/json",
+					Authorization: `JWT ${myInfos.accessToken}`,
+				},
+			}).then((response) => response.json());
+			if (response.status === 403) {
+				return {
+					msg: "Vous n'avez pas accès à l'API, reconnectez-vous, ou voyez avec votre administrateur pour régler le problème.",
+				};
+			}
+			if (response.newToken !== undefined) {
+				myInfos.accessToken = response.newToken;
+			}
+			return response.result;
+		} catch (error) {
+			console.error(nameError, error);
+			return null;
 		}
-		if (response.newToken !== undefined) {
-			myInfos.accessToken = response.newToken;
+	} else {
+		try {
+			let response = await fetch(url, {
+				method: method,
+				headers: {
+					"Content-type": "application/json",
+					Authorization: `JWT ${myInfos.accessToken}`,
+				},
+				body: JSON.stringify(data),
+			}).then((response) => response.json());
+			if (response.status === 403) {
+				return {
+					msg: "Vous n'avez pas accès à l'API, reconnectez-vous, ou voyez avec votre administrateur pour régler le problème.",
+				};
+			}
+			if (response.newToken !== undefined) {
+				myInfos.accessToken = response.newToken;
+			}
+			return response.result;
+		} catch (error) {
+			console.error(nameError, error);
+			return null;
 		}
-		return response.result;
-	} catch (error) {
-		console.error(nameError, error);
-		return null;
 	}
 }
 
@@ -94,5 +120,41 @@ export async function getMachineById(id: string) {
 // ======= PRODUCT PAGE ======= //
 export async function getSignalementsForProductId(id: string) {
 	const response = await fetchAPI(API_URL + `signalementsMachine/${id}`);
+	return response;
+}
+
+// ======= SignalProduct PAGE =======//
+export async function uploadImage(image: any) {
+	try {
+		let response = await fetch(API_URL + `upload/`, {
+			method: "POST",
+			headers: {
+				"Content-type": "multipart/form-data",
+				Authorization: `JWT ${myInfos.accessToken}`,
+			},
+			body: image,
+		}).then((response) => response.json());
+		if (response.status === 403) {
+			return {
+				msg: "Vous n'avez pas accès à l'API, reconnectez-vous, ou voyez avec votre administrateur pour régler le problème.",
+			};
+		}
+		if (response.newToken !== undefined) {
+			myInfos.accessToken = response.newToken;
+		}
+		return response.result;
+	} catch (error) {
+		console.error("uploadImage", error);
+		return null;
+	}
+}
+
+export async function setNewSignalement(signalementInfos: object) {
+	const response = await fetchAPI(
+		API_URL + `signalements`,
+		"POST",
+		signalementInfos,
+		"setNewSignalement"
+	);
 	return response;
 }

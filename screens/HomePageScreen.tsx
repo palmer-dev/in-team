@@ -57,6 +57,9 @@ export default function HomePageScreen() {
 						brand: machine.marque,
 						image: "https://picsum.photos/200/300",
 						category: machine.category.nom,
+						description:
+							machine.description ??
+							"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor tortor quis ligula luctus, quis aliquam nulla accumsan. Donec eget enim fringilla, eleifend est id, consequat ex.",
 					};
 				});
 				let tmp = {};

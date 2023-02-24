@@ -39,25 +39,31 @@ export default function ProductScreen({
 		);
 	};
 
+	// ACTUALISATION AU BACK
 	React.useEffect(() => {
-		getSignalementsForProductId(product.id).then((signals) => {
-			const singalFormats = signals.map((signal) => {
-				return {
-					id: signal._id,
-					title: signal.probleme,
-					technician:
-						signal.technicien.nom.toUpperCase() +
-						" " +
-						signal.technicien.prenom,
-					date: getFormatedDate(signal.date),
-					time: getFormatedTime(signal.date),
-					etat: signal.statut,
-				};
+		const unsubscribe = navigation.addListener("focus", () => {
+			getSignalementsForProductId(product.id).then((signals) => {
+				const singalFormats = signals.map((signal: any) => {
+					return {
+						id: signal._id,
+						title: signal.probleme,
+						technician:
+							(signal?.technicien?.nom.toUpperCase() ??
+								"Pas encore déterminé") +
+							" " +
+							(signal?.technicien?.prenom ?? ""),
+						date: getFormatedDate(signal.date),
+						time: getFormatedTime(signal.date),
+						etat: signal.statut,
+						photo_probleme: signal.photo_probleme,
+					};
+				});
+				setSignalements(singalFormats);
 			});
-			setSignalements(singalFormats);
-			console.log(singalFormats);
 		});
-	}, [product]);
+
+		return unsubscribe;
+	}, [navigation]);
 
 	return (
 		<ScrollView>
@@ -84,12 +90,7 @@ export default function ProductScreen({
 					</View>
 				</View>
 				<Text style={styles.label}>Description</Text>
-				<Text style={styles.description}>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-					Nullam auctor tortor quis ligula luctus, quis aliquam nulla
-					accumsan. Donec eget enim fringilla, eleifend est id,
-					consequat ex.
-				</Text>
+				<Text style={styles.description}>{product.description}</Text>
 				<TouchableOpacity
 					style={styles.maintenanceHeader}
 					onPress={toggleMaintenance}
@@ -102,7 +103,6 @@ export default function ProductScreen({
 				{isMaintenanceOpen && (
 					<View style={styles.maintenanceContent}>
 						{signalements.map((signalement) => (
-							// <Text>{signalement.title}</Text>
 							<SignalCard
 								key={signalement.id}
 								signalement={signalement}
